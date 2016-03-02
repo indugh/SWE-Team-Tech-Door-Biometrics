@@ -1,0 +1,13 @@
+C:\Users\Indu\Desktop\FaceID\FaceID\bin\x64\Debug\FaceID.exe.config
+C:\Users\Indu\Desktop\FaceID\FaceID\bin\x64\Debug\FaceID.exe
+C:\Users\Indu\Desktop\FaceID\FaceID\bin\x64\Debug\FaceID.pdb
+C:\Users\Indu\Desktop\FaceID\FaceID\bin\x64\Debug\libpxcclr.cs.dll
+C:\Users\Indu\Desktop\FaceID\FaceID\obj\x64\Debug\MainWindow.baml
+C:\Users\Indu\Desktop\FaceID\FaceID\obj\x64\Debug\MainWindow.g.cs
+C:\Users\Indu\Desktop\FaceID\FaceID\obj\x64\Debug\App.g.cs
+C:\Users\Indu\Desktop\FaceID\FaceID\obj\x64\Debug\FaceID_MarkupCompile.cache
+C:\Users\Indu\Desktop\FaceID\FaceID\obj\x64\Debug\FaceID.g.resources
+C:\Users\Indu\Desktop\FaceID\FaceID\obj\x64\Debug\FaceID.Properties.Resources.resources
+C:\Users\Indu\Desktop\FaceID\FaceID\obj\x64\Debug\FaceID.csproj.GenerateResource.Cache
+C:\Users\Indu\Desktop\FaceID\FaceID\obj\x64\Debug\FaceID.exe
+C:\Users\Indu\Desktop\FaceID\FaceID\obj\x64\Debug\FaceID.pdb
