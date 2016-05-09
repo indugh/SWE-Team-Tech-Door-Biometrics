@@ -20,6 +20,7 @@ using System.Threading;
 using System.Drawing;
 using System.Windows.Controls;
 using System.IO;
+using System.IO.Ports;
 
 namespace FaceID
 {
@@ -45,7 +46,8 @@ namespace FaceID
         private int faceRectangleWidth;
         private int faceRectangleX;
         private int faceRectangleY;
-
+        private int _lastFace;
+        private int database_saved = 0;
         public MainWindow()
         {
             InitializeComponent();
@@ -56,15 +58,15 @@ namespace FaceID
             dbState = string.Empty;
             doRegister = false;
             doUnregister = false;
-
+           
             // Start SenseManage and configure the face module
             ConfigureRealSense();
-
             // Start the worker thread
             processingThread = new Thread(new ThreadStart(ProcessingThread));
             processingThread.Start();
         }
 
+       
         private void ConfigureRealSense()
         {
             PXCMFaceModule faceModule;
@@ -124,9 +126,12 @@ namespace FaceID
                 // Get face data
                 if (faceData != null)
                 {
+                    //Updates face data to most recent face data
                     faceData.Update();
+                    //Gets the number of faces
                     numFacesDetected = faceData.QueryNumberOfDetectedFaces();
 
+                    //Detected more than zero faces
                     if (numFacesDetected > 0)
                     {
                         // Get the first face detected (index 0)
@@ -136,6 +141,9 @@ namespace FaceID
                         PXCMFaceData.DetectionData faceDetectionData = face.QueryDetection();
                         if (faceDetectionData != null)
                         {
+                            //Bounding Box for Face
+                            //X and Y are the coordinates for the top left pixel of the rectangle, 
+                            //h and w are the height and width of the rectangle
                             PXCMRectI32 faceRectangle;
                             faceDetectionData.QueryBoundingRect(out faceRectangle);
                             faceRectangleHeight = faceRectangle.h;
@@ -151,22 +159,24 @@ namespace FaceID
                             recognitionData = face.QueryRecognition();
                             
                             // Set the user ID and process register/unregister logic
+                            //Only executes when user is registered
+                            //doRegister = false
                             if (recognitionData.IsRegistered())
                             {
-                                userId = Convert.ToString(recognitionData.QueryUserID());   
-                            
+                                userId = Convert.ToString(recognitionData.QueryUserID());
+                                System.Diagnostics.Debug.WriteLine(userId);
                                 if (doUnregister)
                                 {
                                     recognitionData.UnregisterUser();
                                     doUnregister = false;
-                                }
+                                }                                
                             }
                             else
                             {
                                 if (doRegister)
                                 {
                                     recognitionData.RegisterUser();
-
+                                    
                                     // Capture a jpg image of registered user
                                     colorBitmap.Save("image.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
 
@@ -184,7 +194,7 @@ namespace FaceID
                         userId = "No users in view";
                     }
                 }
-
+                
                 // Display the color stream and other UI elements
                 UpdateUI(colorBitmap);
 
@@ -290,8 +300,14 @@ namespace FaceID
             }
             else
             {
-                dbState = "Not Found";
+                dbState = "No Database Found";
             }
+            PXCMFaceData.RecognitionModuleData recognitionModuleData = faceData.QueryRecognitionModule();
+            for (int i = 100; i < 100 + DatabaseUsers; i++)
+            {
+                recognitionModuleData.UnregisterUserByID(i);
+            }
+
         }
 
         private void ReleaseResources()
@@ -317,11 +333,13 @@ namespace FaceID
         private void btnSaveDatabase_Click(object sender, RoutedEventArgs e)
         {
             SaveDatabaseToFile();
+            database_saved = 1;
         }
 
         private void btnDeleteDatabase_Click(object sender, RoutedEventArgs e)
         {
             DeleteDatabaseFile();
+            database_saved = 0;
         }
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
