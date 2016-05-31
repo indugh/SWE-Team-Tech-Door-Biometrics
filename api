@@ -1,0 +1,22 @@
+/********* arduino part ******/
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  if (Serial.available()>0){
+    //do stuff
+  }
+}
+
+
+/****** RealSense part ********/
+public setup(){
+  _serialPort = new SerialPort();
+  _serialPort.PortName = "COM5";
+  _serialPort.BaudRate = 9600;
+  _serialPort.ReadTimeout = 500;
+  _serialPort.WriteTimeout = 500;
+}
+
+// other function
