@@ -24,6 +24,7 @@ using System.IO;
 using System.IO.Ports;
 using System.Collections.Generic;
 using System.Windows.Media.Media3D;
+using System.Linq;
 
 namespace FaceID
 {
@@ -52,6 +53,8 @@ namespace FaceID
         private int faceRectangleY;
         private SerialPort _serialPort;
         private List<double> s = new List<double>();
+        private bool first_process = true;
+        private bool person = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -163,7 +166,11 @@ namespace FaceID
                             num_faces = true;
                         }                
                         if (num_faces)
-                        {   
+                        {
+                            if(userId == "No Users in View")
+                            {
+                                userId = "Prcessing";
+                            }
                             // Get the first face detected (index 0)
                             PXCMFaceData.Face face = faceData.QueryFaceByIndex(0);
 
@@ -206,69 +213,88 @@ namespace FaceID
                                     faceRectangleY = faceRectangle.y;
                                 int n = faceRectangleHeight + 5;
                                 }
-                               
-                                /*
-                            PXCMPointF32 point = new PXCMPointF32();
-                            List<PXCMPointF32> color_points = new List<PXCMPointF32>();
-                            for(int i = faceRectangleX; i < faceRectangleX + faceRectangleWidth; i++)
+                            double avg_list = 0;
+                            if(s.Count == 14)
                             {
-                                for(int j = faceRectangleY; j < faceRectangleY + faceRectangleHeight; j++)
-                                {
-                                    point.x = i;
-                                    point.y = j;
-                                    color_points.Add(point);
-                                }
+                                avg_list = s.Average();
+                                s.Clear();
+                                first_process = false;
                             }
-                            
-                            PXCMPointF32[] depth_points = new PXCMPointF32[color_points.Count];
+                            /*
+                        PXCMPointF32 point = new PXCMPointF32();
+                        List<PXCMPointF32> color_points = new List<PXCMPointF32>();
+                        for(int i = faceRectangleX; i < faceRectangleX + faceRectangleWidth; i++)
+                        {
+                            for(int j = faceRectangleY; j < faceRectangleY + faceRectangleHeight; j++)
+                            {
+                                point.x = i;
+                                point.y = j;
+                                color_points.Add(point);
+                            }
+                        }
 
-                            projection.MapColorToDepth(depth, color_points.ToArray(), depth_points);
-                            int size = depth_info.width * depth_info.height;
-                            PXCMPoint3DF32[] vertices = new PXCMPoint3DF32[size];
-                            projection.QueryVertices(depth, vertices);
-                            int v_y = 0;
-                            int u = 0;
-                            PXCMPoint3DF32 f_point = new PXCMPoint3DF32();
-                            PXCMPoint3DF32[] final_points = new PXCMPoint3DF32[depth_points.Length];
-                            for(int i = 0; i < depth_points.Length/25; i++)
-                            {
-                                point.y = depth_points[i].y;
-                                point.x = depth_points[i].x;
-                                v_y = (int)point.y;
-                                u = (int)point.x;
-                                if (v_y*depth_info.width + u < vertices.Length && v_y*depth_info.width + u > 0) {
-                                    f_point = vertices[v_y * depth_info.width + u];
-                                    final_points[i] = f_point;
-                                }
+                        PXCMPointF32[] depth_points = new PXCMPointF32[color_points.Count];
+
+                        projection.MapColorToDepth(depth, color_points.ToArray(), depth_points);
+                        int size = depth_info.width * depth_info.height;
+                        PXCMPoint3DF32[] vertices = new PXCMPoint3DF32[size];
+                        projection.QueryVertices(depth, vertices);
+                        int v_y = 0;
+                        int u = 0;
+                        PXCMPoint3DF32 f_point = new PXCMPoint3DF32();
+                        PXCMPoint3DF32[] final_points = new PXCMPoint3DF32[depth_points.Length];
+                        for(int i = 0; i < depth_points.Length/25; i++)
+                        {
+                            point.y = depth_points[i].y;
+                            point.x = depth_points[i].x;
+                            v_y = (int)point.y;
+                            u = (int)point.x;
+                            if (v_y*depth_info.width + u < vertices.Length && v_y*depth_info.width + u > 0) {
+                                f_point = vertices[v_y * depth_info.width + u];
+                                final_points[i] = f_point;
                             }
-                            avg = 0;
-                            int total = 0;
-                            for (int i = 0; i < final_points.Length/25; i++)
+                        }
+                        avg = 0;
+                        int total = 0;
+                        for (int i = 0; i < final_points.Length/25; i++)
+                        {
+                            if (final_points[i].z != 0)
                             {
-                                if (final_points[i].z != 0)
-                                {
-                                    avg += final_points[i].z;
-                                    total++;
-                                }
+                                avg += final_points[i].z;
+                                total++;
                             }
-                            avg = avg / total;
-                            float l = 0;
-                            for (int i = 0; i < final_points.Length/25; i++)
+                        }
+                        avg = avg / total;
+                        float l = 0;
+                        for (int i = 0; i < final_points.Length/25; i++)
+                        {
+                            if (final_points[i].z != 0)
                             {
-                                if (final_points[i].z != 0)
-                                {
-                                    l += (avg - final_points[i].z) * (avg - final_points[i].z);
-                                }
+                                l += (avg - final_points[i].z) * (avg - final_points[i].z);
                             }
-                            */
+                        }
+                        */
+                            if(avg_list > .01)
+                            {
+                                person = true;
+                            }
                             
+
+                            if(s.Count < 14 && first_process)
+                            {
+                                userId = "Processing";
+                                person = false;
+                            }
+                            if(avg_list > 0 && avg_list < .01)
+                            {
+                                userId = "Invalid";
+                                person = false;
+                            }
 
                             // Process face recognition data
-                            if (face != null)
+                            if (face != null && person)
                                 {
-                                    
-
-                                   
+                                                                     
                                 // Retrieve the recognition data instance
                                 recognitionData = face.QueryRecognition();
 
