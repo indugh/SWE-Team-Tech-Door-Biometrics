@@ -55,6 +55,8 @@ namespace FaceID
         private List<double> s = new List<double>();
         private bool first_process = true;
         private bool person = false;
+        private double avg_list = 0;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -187,6 +189,7 @@ namespace FaceID
                                     avg += v[i].world.z;
                                 }
 
+                                //Found Standard Deviation
                                 float k = 0;
                                 avg = avg / total_points;
                                 for (int i = 0; i < total_points; i++)
@@ -213,11 +216,9 @@ namespace FaceID
                                     faceRectangleY = faceRectangle.y;
                                 int n = faceRectangleHeight + 5;
                                 }
-                            double avg_list = 0;
                             if(s.Count == 14)
                             {
                                 avg_list = s.Average();
-                                s.Clear();
                                 first_process = false;
                             }
                             /*
@@ -290,7 +291,12 @@ namespace FaceID
                                 userId = "Invalid";
                                 person = false;
                             }
+                            
+                            if(s.Count() == 14)
+                            {
+                                s.Clear();
 
+                            }
                             // Process face recognition data
                             if (face != null && person)
                                 {
@@ -341,6 +347,7 @@ namespace FaceID
                         {
                             //_serialPort.Write(0.ToString());
                             userId = "No users in view";
+                            first_process = true;
                         }
                     }
 
