@@ -91,10 +91,10 @@ namespace FaceID
             // Start the SenseManager and session  
             senseManager = PXCMSenseManager.CreateInstance();
             captureManager = senseManager.captureManager;
-            
+
             // Enable the color stream
-            senseManager.EnableStream(PXCMCapture.StreamType.STREAM_TYPE_COLOR, 640, 480, 0);
-            senseManager.EnableStream(PXCMCapture.StreamType.STREAM_TYPE_DEPTH, 640, 480, 0);
+            senseManager.EnableStream(PXCMCapture.StreamType.STREAM_TYPE_COLOR, 640, 480, 60);
+            //senseManager.EnableStream(PXCMCapture.StreamType.STREAM_TYPE_DEPTH, 640, 480, 0);
 
             // Enable the face module
             senseManager.EnableFace();
@@ -216,87 +216,33 @@ namespace FaceID
                                     faceRectangleY = faceRectangle.y;
                                 int n = faceRectangleHeight + 5;
                                 }
-                            if(s.Count == 14)
+                           
+                            double avg_list = 0;
+                            if (s.Count == 24)
                             {
                                 avg_list = s.Average();
+                                s.Clear();
                                 first_process = false;
                             }
-                            /*
-                        PXCMPointF32 point = new PXCMPointF32();
-                        List<PXCMPointF32> color_points = new List<PXCMPointF32>();
-                        for(int i = faceRectangleX; i < faceRectangleX + faceRectangleWidth; i++)
-                        {
-                            for(int j = faceRectangleY; j < faceRectangleY + faceRectangleHeight; j++)
-                            {
-                                point.x = i;
-                                point.y = j;
-                                color_points.Add(point);
-                            }
-                        }
 
-                        PXCMPointF32[] depth_points = new PXCMPointF32[color_points.Count];
-
-                        projection.MapColorToDepth(depth, color_points.ToArray(), depth_points);
-                        int size = depth_info.width * depth_info.height;
-                        PXCMPoint3DF32[] vertices = new PXCMPoint3DF32[size];
-                        projection.QueryVertices(depth, vertices);
-                        int v_y = 0;
-                        int u = 0;
-                        PXCMPoint3DF32 f_point = new PXCMPoint3DF32();
-                        PXCMPoint3DF32[] final_points = new PXCMPoint3DF32[depth_points.Length];
-                        for(int i = 0; i < depth_points.Length/25; i++)
-                        {
-                            point.y = depth_points[i].y;
-                            point.x = depth_points[i].x;
-                            v_y = (int)point.y;
-                            u = (int)point.x;
-                            if (v_y*depth_info.width + u < vertices.Length && v_y*depth_info.width + u > 0) {
-                                f_point = vertices[v_y * depth_info.width + u];
-                                final_points[i] = f_point;
-                            }
-                        }
-                        avg = 0;
-                        int total = 0;
-                        for (int i = 0; i < final_points.Length/25; i++)
-                        {
-                            if (final_points[i].z != 0)
-                            {
-                                avg += final_points[i].z;
-                                total++;
-                            }
-                        }
-                        avg = avg / total;
-                        float l = 0;
-                        for (int i = 0; i < final_points.Length/25; i++)
-                        {
-                            if (final_points[i].z != 0)
-                            {
-                                l += (avg - final_points[i].z) * (avg - final_points[i].z);
-                            }
-                        }
-                        */
-                            if(avg_list > .01)
+                            //Find threshold
+                            if (avg_list > .01)
                             {
                                 person = true;
                             }
-                            
 
-                            if(s.Count < 14 && first_process)
+
+                            if (s.Count < 24 && first_process)
                             {
                                 userId = "Processing";
                                 person = false;
                             }
-                            if(avg_list > 0 && avg_list < .01)
+                            if (avg_list > 0 && avg_list < .01)
                             {
                                 userId = "Invalid";
                                 person = false;
                             }
-                            
-                            if(s.Count() == 14)
-                            {
-                                s.Clear();
 
-                            }
                             // Process face recognition data
                             if (face != null && person)
                                 {
