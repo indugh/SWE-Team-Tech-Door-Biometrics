@@ -358,6 +358,24 @@ namespace FaceID
                     rectFaceMarker.Visibility = Visibility.Hidden;
                     lblFloatingId.Visibility = Visibility.Hidden;
                 }
+                double u = 0;
+                bool userInt = double.TryParse(userId, out u);
+                if (userId != "Unrecognized" && !userInt)
+                {
+                    btnRegister.IsEnabled = false;
+                    btnUnregister.IsEnabled = false;
+                }
+                else if(userInt)
+                {
+                    btnRegister.IsEnabled = false;
+                    btnUnregister.IsEnabled = true;
+                }
+                else {
+                    btnRegister.IsEnabled = true;
+                    btnUnregister.IsEnabled = false;
+                }
+
+     
             }));
 
             // Release resources
