@@ -75,6 +75,7 @@ namespace FaceID
             ConfigureRealSense();
             // Start the worker thread
             btnRegisterMode.IsEnabled = false;
+            btnGetLog.Visibility = System.Windows.Visibility.Hidden;
             processingThread = new Thread(new ThreadStart(ProcessingThread));
             processingThread.Start();
             /*_serialPort = new SerialPort();
@@ -331,6 +332,12 @@ namespace FaceID
         {
             this.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(delegate()
             {
+                int n;
+                bool userIdrec = int.TryParse(userId, out n);
+                if (userIdrec && btnRecognizeMode.IsEnabled == false)
+                {
+                    btnGetLog.Visibility = System.Windows.Visibility.Visible;
+                }
                 // Display  the color image
                 if (bitmap != null)
                 {
@@ -338,6 +345,7 @@ namespace FaceID
                 }
 
                  // Update UI elements
+                
                 lblNumFacesDetected.Content = String.Format("Faces Detected: {0}", numFacesDetected);
                 lblUserId.Content = String.Format("User ID: {0}", userId);
                 lblDatabaseState.Content = String.Format("Database: {0}", dbState);
@@ -475,12 +483,17 @@ namespace FaceID
             btnUnregister.Visibility = System.Windows.Visibility.Visible;
             btnSaveDatabase.Visibility = System.Windows.Visibility.Visible;
             btnDeleteDatabase.Visibility = System.Windows.Visibility.Visible;
+            btnGetLog.Visibility = System.Windows.Visibility.Hidden;
             btnRegisterMode.IsEnabled = false;
             btnRecognizeMode.IsEnabled = true;
         }
 
         private void btnRecognizeMode_Click(object sender, RoutedEventArgs e)
         {
+            if (userId == "Unrecognized")
+            {
+                btnGetLog.Visibility = System.Windows.Visibility.Hidden;
+            }
             btnRegister.Visibility = System.Windows.Visibility.Hidden;
             btnUnregister.Visibility = System.Windows.Visibility.Hidden;
             btnSaveDatabase.Visibility = System.Windows.Visibility.Hidden;

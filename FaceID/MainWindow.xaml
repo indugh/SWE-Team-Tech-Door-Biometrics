@@ -6,9 +6,11 @@
         Closing="Window_Closing" Height="640" Background="#0f181e" Width="960">
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Label Content="Door Authentication" FontSize="32" Foreground="White" Margin="5"/>
-        <Button x:Name="btnRecognizeMode" Content="Recognize Mode" Click="btnRecognizeMode_Click" Width="150" Margin="5,10,10,0" Height="30" FontSize="16"/>
-        <Button x:Name="btnRegisterMode" Content="Register Mode" Click="btnRegisterMode_Click" Width="150" Margin="5,10,10,0" Height="30" FontSize="16"/>
+        <StackPanel Orientation ="Horizontal">
+            <Label Content="Door Authentication" FontSize="32" Foreground="White" Margin="5"/>
+            <Button x:Name="btnRecognizeMode" Content="Recognize Mode" Click="btnRecognizeMode_Click" Width="150" Margin="5,10,10,0" Height="30" FontSize="16"/>
+            <Button x:Name="btnRegisterMode" Content="Register Mode" Click="btnRegisterMode_Click" Width="150" Margin="5,10,10,0" Height="30" FontSize="16"/>
+        </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Border x:Name="bdrPictureBorder" BorderBrush="#64B445" BorderThickness="2" Margin="10">
                 <Canvas Width="640" Height="480" ClipToBounds="True">
