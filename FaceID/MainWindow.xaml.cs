@@ -25,6 +25,7 @@ using System.IO.Ports;
 using System.Collections.Generic;
 using System.Windows.Media.Media3D;
 using System.Linq;
+using System.Net.Mail;
 
 namespace FaceID
 {
@@ -56,12 +57,14 @@ namespace FaceID
         private bool first_process = true;
         private bool person = false;
         private double avg_list = 0;
-
+        private String date;
+        private String time;
+        private String log;
         public MainWindow()
         {
             InitializeComponent();
             rectFaceMarker.Visibility = Visibility.Hidden;
-            chkShowFaceMarker.IsChecked = true;
+            //chkShowFaceMarker.IsChecked = true;
             numFacesDetected = 0;
             userId = string.Empty;
             dbState = string.Empty;
@@ -71,6 +74,7 @@ namespace FaceID
             // Start SenseManage and configure the face module
             ConfigureRealSense();
             // Start the worker thread
+            btnRegisterMode.IsEnabled = false;
             processingThread = new Thread(new ThreadStart(ProcessingThread));
             processingThread.Start();
             /*_serialPort = new SerialPort();
@@ -255,7 +259,19 @@ namespace FaceID
                                     //doRegister = false
                                     if (recognitionData.IsRegistered())
                                     {
-                                        userId = Convert.ToString(recognitionData.QueryUserID());
+                                    this.Dispatcher.Invoke((Action)(() =>
+                                    {
+                                        if (btnRegisterMode.IsEnabled == true)
+                                        {
+                                            date = DateTime.Today.ToString("dd-MM-yyyy");
+                                            time = DateTime.Now.ToString("HH:mm:ss");
+                                            log = date + " " + time+" ";
+                                        }
+                                    }));
+                                    
+
+                                    userId = Convert.ToString(recognitionData.QueryUserID());
+                                    log += "User ID: "+ userId + "Recognized";
                                         System.Diagnostics.Debug.WriteLine(userId);
                                         //_serialPort.Write(1.ToString());
                                         if (doUnregister)
@@ -325,7 +341,19 @@ namespace FaceID
                 lblNumFacesDetected.Content = String.Format("Faces Detected: {0}", numFacesDetected);
                 lblUserId.Content = String.Format("User ID: {0}", userId);
                 lblDatabaseState.Content = String.Format("Database: {0}", dbState);
-
+                this.Dispatcher.Invoke((Action)(() =>
+                {
+                    if (btnRegisterMode.IsEnabled == true && userId != "Unrecognized")
+                    {
+                        lblState.Content = " Recognize Mode Enabled";
+                        Logger(log);
+                    }
+                    else
+                    {
+                        lblState.Content = "Register Mode Enabled";
+                    }
+                }));
+               
                 // Change picture border color depending on if user is in camera view
                 if (numFacesDetected > 0)
                 {
@@ -337,7 +365,7 @@ namespace FaceID
                 }
 
                 // Show or hide face marker
-                if ((numFacesDetected > 0) && (chkShowFaceMarker.IsChecked == true))
+                if (numFacesDetected > 0)
                 {
                     // Show face marker
                     rectFaceMarker.Height = faceRectangleHeight;
@@ -374,8 +402,8 @@ namespace FaceID
                     btnRegister.IsEnabled = true;
                     btnUnregister.IsEnabled = false;
                 }
+                
 
-     
             }));
 
             // Release resources
@@ -441,6 +469,39 @@ namespace FaceID
             senseManager.Dispose();
         }
 
+        private void btnRegisterMode_Click(object sender, RoutedEventArgs e)
+        {
+            btnRegister.Visibility = System.Windows.Visibility.Visible;
+            btnUnregister.Visibility = System.Windows.Visibility.Visible;
+            btnSaveDatabase.Visibility = System.Windows.Visibility.Visible;
+            btnDeleteDatabase.Visibility = System.Windows.Visibility.Visible;
+            btnRegisterMode.IsEnabled = false;
+            btnRecognizeMode.IsEnabled = true;
+        }
+
+        private void btnRecognizeMode_Click(object sender, RoutedEventArgs e)
+        {
+            btnRegister.Visibility = System.Windows.Visibility.Hidden;
+            btnUnregister.Visibility = System.Windows.Visibility.Hidden;
+            btnSaveDatabase.Visibility = System.Windows.Visibility.Hidden;
+            btnDeleteDatabase.Visibility = System.Windows.Visibility.Hidden;
+            btnRecognizeMode.IsEnabled = false;
+            btnRegisterMode.IsEnabled = true;
+        }
+
+        public void Logger(String lines)
+        {
+
+            // Write the string to a file.append mode is enabled so that the log
+            // lines get appended to  test.txt than wiping content and writing the log
+            String path = "C:\\Users\\Indu\\Desktop\\FaceID\\";
+            System.IO.StreamWriter file = new System.IO.StreamWriter(path + "logging.txt", true);
+            file.WriteLine(lines);
+
+            file.Close();
+
+        }
+
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
             doRegister = true;
@@ -460,6 +521,23 @@ namespace FaceID
         {
             DeleteDatabaseFile();
         }
+
+        private void btnGetLog_Click(object sender, RoutedEventArgs e)
+        {
+            MailMessage mail = new MailMessage();
+            SmtpClient client = new SmtpClient();
+            client.Port = 25;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.UseDefaultCredentials = false;
+            client.Host = "smtp.gmail.com";
+            mail.To.Add(new MailAddress("indughandikota@gmail.com")); // <-- this one
+            mail.From = new MailAddress("paigehf2@gmail.com");
+            mail.Subject = "this is a test email.";
+            mail.Body = "this is my test email body";
+            client.Send(mail);
+        }
+
+
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
             ReleaseResources();

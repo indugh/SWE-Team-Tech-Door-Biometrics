@@ -3,12 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Intel® RealSense™ Code Sample"
         WindowStartupLocation="CenterScreen"
-        Closing="Window_Closing" Height="640" Background="#FF293955" Width="960">
+        Closing="Window_Closing" Height="640" Background="#0f181e" Width="960">
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Label Content="Face Recognition" FontSize="32" Foreground="White" Margin="5"/>
+        <Label Content="Door Authentication" FontSize="32" Foreground="White" Margin="5"/>
+        <Button x:Name="btnRecognizeMode" Content="Recognize Mode" Click="btnRecognizeMode_Click" Width="150" Margin="5,10,10,0" Height="30" FontSize="16"/>
+        <Button x:Name="btnRegisterMode" Content="Register Mode" Click="btnRegisterMode_Click" Width="150" Margin="5,10,10,0" Height="30" FontSize="16"/>
         <StackPanel Orientation="Horizontal">
-            <Border x:Name="bdrPictureBorder" BorderBrush="Red" BorderThickness="10" Margin="10">
+            <Border x:Name="bdrPictureBorder" BorderBrush="#64B445" BorderThickness="2" Margin="10">
                 <Canvas Width="640" Height="480" ClipToBounds="True">
                     <Image x:Name="imgColorStream"/>
                     <Rectangle x:Name="rectFaceMarker" Fill="#00000000" Height="50" Stroke="LightGreen" Width="50" StrokeThickness="2"/>
@@ -19,11 +21,13 @@
                 <Label x:Name="lblUserId" Content="-" FontSize="18" Foreground="White" HorizontalAlignment="Center"/>
                 <Label x:Name="lblNumFacesDetected" Content="-" FontSize="18" Foreground="White" HorizontalAlignment="Center"/>
                 <Label x:Name="lblDatabaseState" Content="-" FontSize="18" Foreground="White" HorizontalAlignment="Center"/>
-                <CheckBox x:Name="chkShowFaceMarker" FontSize="16" Foreground="White" Content="Show face marker" Margin="0,60,0,0" HorizontalAlignment="Center" />
+                <Label x:Name="lblState" Content="-" FontSize="18" Foreground="White" HorizontalAlignment="Center"/>
+                <!--<CheckBox x:Name="chkShowFaceMarker" FontSize="16" Foreground="White" Content="Show face marker" Margin="0,60,0,0" HorizontalAlignment="Center" />-->
                 <Button x:Name="btnRegister" Content="Register User" Click="btnRegister_Click" Width="150" Margin="5,10,10,0" Height="30" FontSize="16" HorizontalAlignment="Center"/>
                 <Button x:Name="btnUnregister" Content="Unregister User" Click="btnUnregister_Click" Width="150" Margin="5,10,10,0" Height="30" FontSize="16" HorizontalAlignment="Center"/>
                 <Button x:Name="btnSaveDatabase" Content="Save Database" Click="btnSaveDatabase_Click" Width="150" Margin="5,10,10,0" Height="30" FontSize="16" HorizontalAlignment="Center"/>
                 <Button x:Name="btnDeleteDatabase" Content="Delete Database" Width="150" Margin="5,10,10,0" Height="30" FontSize="16" Click="btnDeleteDatabase_Click" HorizontalAlignment="Center"/>
+                <Button x:Name="btnGetLog" Content="Get Log"  Width="150" Margin="5,10,10,0" Height="30" FontSize="16" Click="btnGetLog_Click" HorizontalAlignment="Center"/>
                 <Button x:Name="btnExit" Content="Exit"  Width="150" Margin="5,10,10,0" Height="30" FontSize="16" Click="btnExit_Click" HorizontalAlignment="Center"/>
             </StackPanel>
         </StackPanel>
