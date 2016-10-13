@@ -1,0 +1,25 @@
+<h1>Login</h1>
+	{% if  err_username %}
+		<p id="error_username" class="error">No such username exists, try again</p>
+	{% endif %}
+	{% if  err_password %}
+		<p id="error_combo" class="error">Incorrect password, try again</p>
+	{% endif %}
+
+		<tr>
+			<form action = "" method="post">
+				<table>
+					<tr>
+						<td><p>Username: </p></td>
+						<td><p><input id="login_username_input" type=text name=username></td>
+					</tr>
+					<tr>
+						<td><p>Password: </p></td>
+						<td><p><input id="login_password_input" type=password name=password></td>
+					</tr>
+						
+				</table>
+				<p><input type=submit value=Login>
+			</form>
+		</tr>
+	 
