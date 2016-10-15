@@ -12,3 +12,17 @@ C:\Users\Indu\Desktop\FaceID\FaceID\obj\x64\Release\FaceID.csproj.GenerateResour
 C:\Users\Indu\Desktop\FaceID\FaceID\obj\x64\Release\FaceID.exe
 C:\Users\Indu\Desktop\FaceID\FaceID\obj\x64\Release\FaceID.pdb
 C:\Users\Indu\Desktop\FaceID\FaceID\obj\x64\Release\FaceID.csprojResolveAssemblyReference.cache
+C:\Users\ighan\Desktop\SWE-Team-Tech-Door-Biometrics\FaceID\bin\x64\Release\FaceID.exe.config
+C:\Users\ighan\Desktop\SWE-Team-Tech-Door-Biometrics\FaceID\obj\x64\Release\FaceID.exe
+C:\Users\ighan\Desktop\SWE-Team-Tech-Door-Biometrics\FaceID\obj\x64\Release\FaceID.pdb
+C:\Users\ighan\Desktop\SWE-Team-Tech-Door-Biometrics\FaceID\bin\x64\Release\FaceID.exe
+C:\Users\ighan\Desktop\SWE-Team-Tech-Door-Biometrics\FaceID\bin\x64\Release\FaceID.pdb
+C:\Users\ighan\Desktop\SWE-Team-Tech-Door-Biometrics\FaceID\bin\x64\Release\libpxcclr.cs.dll
+C:\Users\ighan\Desktop\SWE-Team-Tech-Door-Biometrics\FaceID\obj\x64\Release\FaceID.csprojResolveAssemblyReference.cache
+C:\Users\ighan\Desktop\SWE-Team-Tech-Door-Biometrics\FaceID\obj\x64\Release\MainWindow.baml
+C:\Users\ighan\Desktop\SWE-Team-Tech-Door-Biometrics\FaceID\obj\x64\Release\MainWindow.g.cs
+C:\Users\ighan\Desktop\SWE-Team-Tech-Door-Biometrics\FaceID\obj\x64\Release\App.g.cs
+C:\Users\ighan\Desktop\SWE-Team-Tech-Door-Biometrics\FaceID\obj\x64\Release\FaceID_MarkupCompile.cache
+C:\Users\ighan\Desktop\SWE-Team-Tech-Door-Biometrics\FaceID\obj\x64\Release\FaceID.g.resources
+C:\Users\ighan\Desktop\SWE-Team-Tech-Door-Biometrics\FaceID\obj\x64\Release\FaceID.Properties.Resources.resources
+C:\Users\ighan\Desktop\SWE-Team-Tech-Door-Biometrics\FaceID\obj\x64\Release\FaceID.csproj.GenerateResource.Cache
