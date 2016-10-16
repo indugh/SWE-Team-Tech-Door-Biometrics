@@ -286,7 +286,9 @@ namespace FaceID
                                         //_serialPort.Write(0.ToString());
                                         if (doRegister)
                                         {
-                                            recognitionData.RegisterUser();
+
+                                        System.Diagnostics.Process.Start("http://127.0.0.1:5000/");
+                                        recognitionData.RegisterUser();
 
                                             // Capture a jpg image of registered user
                                             colorBitmap.Save("image.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);

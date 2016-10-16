@@ -1,13 +1,20 @@
-<h1>Login</h1>
-	{% if  err_username %}
-		<p id="error_username" class="error">No such username exists, try again</p>
-	{% endif %}
-	{% if  err_password %}
-		<p id="error_combo" class="error">Incorrect password, try again</p>
-	{% endif %}
-
+<head>
+    <title>Authentication System</title>
+ 
+ 
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+ 
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+ 
+ 
+</head>
+<body>
+ 
+    <div class="container">
+        <div class="jumbotron">
+<h1>User Login</h1>
 		<tr>
-			<form action = "" method="post">
+			<form action = "{{url_for('login.i_route')}}" method="post" name="login">
 				<table>
 					<tr>
 						<td><p>Username: </p></td>
@@ -19,7 +26,10 @@
 					</tr>
 						
 				</table>
-				<p><input type=submit value=Login>
+				<p><a class="btn btn-lg btn-success" input type=submit role="button" value=Register>Log In</a>
+            </p>
 			</form>
 		</tr>
+	</div>
+</div>
 	 

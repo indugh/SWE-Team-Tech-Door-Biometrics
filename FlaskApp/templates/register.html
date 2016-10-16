@@ -1,0 +1,43 @@
+<head>
+    <title>Authentication System</title>
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet"> 
+</head>
+<body>
+ 
+    <div class="container">
+<div class="jumbotron">
+
+        <form action="{{url_for('login.registertest_route')}}" method="POST">
+            {{form.username.label}}: {{ form.username }}
+            <br>
+            {{form.password.label}}: {{ form.password }}
+            <br>
+            {{form.email.label}}: {{ form.email }}
+            {{ form.csrf_token }}
+            <a input class="btn btn-lg btn-success" type="submit" role="button" value=Register>Register</a>
+        </form>
+         </div>
+         </div>
+    </body>
+<!-- <h1>User Registration</h1>
+		<tr>
+			<form action = "/register" method="post" name="register">
+				<table>
+					<tr>
+						<td><p>Username: </p></td>
+						<td><p><input id="register_username_input" type=text name=username></td>
+					</tr>
+					<tr>
+						<td><p>Password: </p></td>
+						<td><p><input id="register_password_input" type=password name=password></td>
+					</tr>
+						
+				</table>
+				 <p><a class="btn btn-lg btn-success" input type=submit role="button" value=Register>Register</a>
+            </p>
+			</form>
+		</tr>
+	</div>
+</div>
+	  -->

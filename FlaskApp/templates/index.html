@@ -20,9 +20,9 @@
                 <ul class="nav nav-pills pull-right">
                     <li role="presentation" class="active"><a href="#">Home</a>
                     </li>
-                    <li role="presentation" id = "sign-in"><a href="{{url_for('login.login_route')}}">Sign In</a>
+                    <li role="presentation"><a href="{{url_for('login.login_route')}}">Sign In</a>
                     </li>
-                    <li role="presentation"><a href="showSignUp">Sign Up</a>
+                    <li role="presentation"><a href="{{url_for('login.register_route')}} ">Sign Up</a>
                     </li>
                 </ul>
             </nav>
@@ -32,7 +32,7 @@
         <div class="jumbotron">
             <h1>Web Authentication</h1>
             <p class="lead"></p>
-            <p><a class="btn btn-lg btn-success" href="showSignUp" role="button">Verify Yourself</a>
+            <p><a class="btn btn-lg btn-success" href="{{url_for('login.register_route')}}" role="button">Verify Yourself</a>
             </p>
         </div>
  
