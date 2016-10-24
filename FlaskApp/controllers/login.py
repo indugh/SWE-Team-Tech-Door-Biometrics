@@ -23,10 +23,8 @@ def login_route():
 		print "hi"
 		print username
 		print password
-		c.execute("SELECT * FROM users")
-		print c.rowcount
-		if c.rowcount == 1:
-			print "hi"
+		c.execute("SELECT username, password FROM users where username=? and password=?", (username, password))
+		user = c.fetchone()
 		return redirect('/home')
 		# query = "SELECT password FROM users WHERE username = \'{}\'".format(request.form['username'].lower())
 		# cursor = mysql.connection.cursor()
