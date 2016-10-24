@@ -13,23 +13,13 @@
     <div class="container">
         <div class="jumbotron">
 <h1>User Login</h1>
-		<tr>
-			<form action = "{{url_for('login.i_route')}}" method="post" name="login">
-				<table>
-					<tr>
-						<td><p>Username: </p></td>
-						<td><p><input id="login_username_input" type=text name=username></td>
-					</tr>
-					<tr>
-						<td><p>Password: </p></td>
-						<td><p><input id="login_password_input" type=password name=password></td>
-					</tr>
-						
-				</table>
-				<p><a class="btn btn-lg btn-success" input type=submit role="button" value=Register>Log In</a>
-            </p>
-			</form>
-		</tr>
-	</div>
-</div>
+		<div class="jumbotron">
+        <form action="{{url_for('login.login_route')}}" method="POST">
+        	<input type="username" name="username" class="form-control" id="username" placeholder="Username">
+            <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+         </div>
+         </div>
+    </body>
 	 
