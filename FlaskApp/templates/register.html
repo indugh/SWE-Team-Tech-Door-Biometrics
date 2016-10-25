@@ -4,8 +4,16 @@
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet"> 
 </head>
 <body>
- 
-    <div class="container">
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      {{ message }}
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="container">
 <div class="jumbotron">
         <form action="{{url_for('login.register_route')}}" method="POST">
         	<input type="username" name="username" class="form-control" id="username" placeholder="Username">

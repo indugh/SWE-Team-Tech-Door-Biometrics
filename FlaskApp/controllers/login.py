@@ -31,14 +31,22 @@ def login_route():
 	if request.method == 'POST':
 		username = request.form['username']
 		password = request.form['password']
-		print "hi"
+		if not username or not password:
+			flash('Please Enter Both Fields')
+			return render_template('login.html')
 		print username
 		print password
+		c.execute("SELECT * from users")
+		print c.fetchall()
 		c.execute("SELECT username, password FROM users where username=? and password=?", (username, password))
 		user = c.fetchone()
-		sig_request = sign_request('DIFRGMA77D2LMZYAESSU', '3PaauXz74LrY9l7aEVxdrbeP8IryyNhToMBemr3I', akey, username)
-		return render_template('duo_login.html', sig_request = sig_request, post_action = request.path)
-	return render_template('home.html')
+		print user
+		if user:
+			sig_request = sign_request(ikey, skey, akey, username)
+			return render_template('duo_login.html', sig_request = sig_request, post_action = request.path)
+		else:
+			flash('Inavlid Password')
+			return render_template('login.html')
 
 @login.route('/duo_login', methods = ['GET' ,'POST'])
 def duo_login_route():
@@ -51,20 +59,29 @@ def register_route():
 	elif request.method == "POST":
 		username = request.form['username']
 		password = request.form['password']
-		sig_request = sign_request('DIFRGMA77D2LMZYAESSU', '3PaauXz74LrY9l7aEVxdrbeP8IryyNhToMBemr3I', akey, username)
-		c.execute("INSERT INTO users (username, password) values (?,?)",(username,password))
-		conn.commit()
+		if not username or not password:
+			flash('Please enter both fields')
+			return render_template('register.html')
+		else:
+			#check if username is in db
+			user = c.execute('SELECT * FROM users WHERE username=?', (username,)).fetchall()
+			print user
+			if user:
+				flash("The username already exists")
+				return render_template('register.html')
+			sig_request = sign_request('DIFRGMA77D2LMZYAESSU', '3PaauXz74LrY9l7aEVxdrbeP8IryyNhToMBemr3I', akey, username)
+			c.execute('INSERT INTO users (username, password) values (?,?)',(username,password))
+			conn.commit()
 		return render_template('duo_login.html', sig_request = sig_request, post_action = request.path)
-		return redirect('/home')
-
 	
 @login.route('/home', methods = ['GET','POST'])
 def home_route():
 	if request.method == "POST":
-		sig_response = request.args.get("sig_response") # for example (if using Tornado: http://www.tornadoweb.org/en/stable/documentation.html)
+		c.execute("INSERT INTO registered (registered) values(1)")
+		session['username'] = username
+		sig_response = request.args.get("sig_response") 
 		authenticated_username = verify_response(ikey, skey, akey, sig_response)
 		if authenticated_username:
-			print "yay"
   			log_user_in(authenticated_username)
 	return render_template('index.html')
 

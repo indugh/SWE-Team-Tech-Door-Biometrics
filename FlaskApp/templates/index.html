@@ -20,9 +20,14 @@
                 <ul class="nav nav-pills pull-right">
                     <li role="presentation" class="active"><a href="#">Home</a>
                     </li>
+                    {{session.username}}
+                    {% if not session.username %}
                     <li role="presentation"><a href="{{url_for('login.login_route')}}">Sign In</a>
+                    {% endif %}
                     </li>
+                    {% if not session.username %}
                     <li role="presentation"><a href="{{url_for('login.register_route')}} ">Sign Up</a>
+                    {% endif %}
                     </li>
                 </ul>
             </nav>
