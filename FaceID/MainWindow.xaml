@@ -25,6 +25,7 @@
                 <Label x:Name="lblDatabaseState" Content="-" FontSize="18" Foreground="White" HorizontalAlignment="Center"/>
                 <Label x:Name="lblState" Content="-" FontSize="18" Foreground="White" HorizontalAlignment="Center"/>
                 <!--<CheckBox x:Name="chkShowFaceMarker" FontSize="16" Foreground="White" Content="Show face marker" Margin="0,60,0,0" HorizontalAlignment="Center" />-->
+                <Button x:Name="btnUnlockDoor" Content="Open Door" Click="btnUnlock_Click" Width="150" Margin="5,10,10,0" Height="30" FontSize="16" HorizontalAlignment="Center"/>
                 <Button x:Name="btnRegister" Content="Register User" Click="btnRegister_Click" Width="150" Margin="5,10,10,0" Height="30" FontSize="16" HorizontalAlignment="Center"/>
                 <Button x:Name="btnUnregister" Content="Unregister User" Click="btnUnregister_Click" Width="150" Margin="5,10,10,0" Height="30" FontSize="16" HorizontalAlignment="Center"/>
                 <Button x:Name="btnSaveDatabase" Content="Save Database" Click="btnSaveDatabase_Click" Width="150" Margin="5,10,10,0" Height="30" FontSize="16" HorizontalAlignment="Center"/>

@@ -48,6 +48,7 @@ namespace FaceID
         private const string DatabaseFilename = "database.bin";
         private bool doRegister;
         private bool doUnregister;
+        bool recognizeMode;
         private int faceRectangleHeight;
         private int faceRectangleWidth;
         private int faceRectangleX;
@@ -60,6 +61,7 @@ namespace FaceID
         private String date;
         private String time;
         private String log;
+      //  private SQLiteConnection dbConnection;
         public MainWindow()
         {
             InitializeComponent();
@@ -78,15 +80,13 @@ namespace FaceID
             btnGetLog.Visibility = System.Windows.Visibility.Hidden;
             processingThread = new Thread(new ThreadStart(ProcessingThread));
             processingThread.Start();
-            /*_serialPort = new SerialPort();
-            _serialPort.PortName = "COM5";
+            _serialPort = new SerialPort();
+            _serialPort.PortName = "COM3";
             _serialPort.BaudRate = 9600;
             _serialPort.ReadTimeout = 500;
             _serialPort.WriteTimeout = 500;
             _serialPort.Open();
-            */
         }
-
 
         private void ConfigureRealSense()
         {
@@ -269,8 +269,8 @@ namespace FaceID
                                             log = date + " " + time+" ";
                                         }
                                     }));
-                                    
-
+                             //       dbConnection = new SQLiteConnection("Data Source=/FlaskApp/database.db; Version=3;");
+                              //      dbConnection.Open();
                                     userId = Convert.ToString(recognitionData.QueryUserID());
                                     log += "User ID: "+ userId + "Recognized";
                                         System.Diagnostics.Debug.WriteLine(userId);
@@ -283,11 +283,11 @@ namespace FaceID
                                     }
                                     else
                                     {
-                                        //_serialPort.Write(0.ToString());
                                         if (doRegister)
                                         {
 
-                                        System.Diagnostics.Process.Start("http://127.0.0.1:5000/");
+                                       Process registrationProcess = System.Diagnostics.Process.Start("http://127.0.0.1:5000/register");
+                                        Thread.Sleep(10000);
                                         recognitionData.RegisterUser();
 
                                             // Capture a jpg image of registered user
@@ -356,7 +356,7 @@ namespace FaceID
                     if (btnRegisterMode.IsEnabled == true && userId != "Unrecognized")
                     {
                         lblState.Content = " Recognize Mode Enabled";
-                        Logger(log);
+                        //Logger(log);
                     }
                     else
                     {
@@ -481,6 +481,7 @@ namespace FaceID
 
         private void btnRegisterMode_Click(object sender, RoutedEventArgs e)
         {
+            btnUnlockDoor.Visibility = System.Windows.Visibility.Hidden;
             btnRegister.Visibility = System.Windows.Visibility.Visible;
             btnUnregister.Visibility = System.Windows.Visibility.Visible;
             btnSaveDatabase.Visibility = System.Windows.Visibility.Visible;
@@ -488,18 +489,26 @@ namespace FaceID
             btnGetLog.Visibility = System.Windows.Visibility.Hidden;
             btnRegisterMode.IsEnabled = false;
             btnRecognizeMode.IsEnabled = true;
+            recognizeMode = false;
         }
 
         private void btnRecognizeMode_Click(object sender, RoutedEventArgs e)
         {
+            recognizeMode = true;
             if (userId == "Unrecognized")
             {
+                btnUnlockDoor.Visibility = System.Windows.Visibility.Hidden;
                 btnGetLog.Visibility = System.Windows.Visibility.Hidden;
+            }
+            else
+            {
+                btnUnlockDoor.Visibility = System.Windows.Visibility.Visible;
             }
             btnRegister.Visibility = System.Windows.Visibility.Hidden;
             btnUnregister.Visibility = System.Windows.Visibility.Hidden;
             btnSaveDatabase.Visibility = System.Windows.Visibility.Hidden;
             btnDeleteDatabase.Visibility = System.Windows.Visibility.Hidden;
+            btnUnlockDoor.IsEnabled = true;
             btnRecognizeMode.IsEnabled = false;
             btnRegisterMode.IsEnabled = true;
         }
@@ -559,6 +568,13 @@ namespace FaceID
             this.Close();
             _serialPort.Close();
 
+        }
+
+        private void btnUnlock_Click(object sender, RoutedEventArgs e)
+        {
+                Process loginProcess = System.Diagnostics.Process.Start("http://127.0.0.1:5000/login");
+                Thread.Sleep(10000);
+                _serialPort.Write(0.ToString());
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
