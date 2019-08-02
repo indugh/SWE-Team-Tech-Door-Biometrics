@@ -8,10 +8,6 @@ table_name = 'users'
 username_column = 'username'
 pword_column = 'password'
 
-DUO_IKEY = 'DIFRGMA77D2LMZYAESSU'
-DUO_SKEY = '3PaauXz74LrY9l7aEVxdrbeP8IryyNhToMBemr3I'
-DUO_AKEY = '4ff66a503b06879cd2a1e565ba956751ad885a22'
-DUO_HOST = 'api-255d7c3c.duosecurity.com'
 
 ikey = DUO_IKEY
 skey = DUO_SKEY
